@@ -1,10 +1,10 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { venues, type Venue } from "@/lib/venues";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 // Heatmap style glowing circle marker
 const createHeatmapIcon = () => L.divIcon({
@@ -12,7 +12,6 @@ const createHeatmapIcon = () => L.divIcon({
     html: `<div class="heatmap-dot"><div class="heatmap-pulse"></div></div>`,
     iconSize: [40, 40],
     iconAnchor: [20, 20],
-    popupAnchor: [0, -20],
 });
 
 // Istanbul bounds - restrict navigation to Istanbul area
@@ -37,9 +36,12 @@ function MapBoundsController() {
     return null;
 }
 
-function VenuePopup({ venue }: { venue: Venue }) {
+function VenueCard({ venue, onClose }: { venue: Venue; onClose: () => void }) {
     return (
-        <div className="venue-popup">
+        <div className="venue-card">
+            <button className="venue-card-close" onClick={onClose} aria-label="Kapat">
+                ✕
+            </button>
             <div className="venue-image-container">
                 <img
                     src={venue.imageUrl}
@@ -57,35 +59,58 @@ function VenuePopup({ venue }: { venue: Venue }) {
     );
 }
 
+function MarkerEvents({ venue, onSelect }: { venue: Venue; onSelect: (v: Venue) => void }) {
+    return null;
+}
+
 export default function IstanbulMap() {
+    const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
+
+    const handleMarkerClick = useCallback((venue: Venue) => {
+        setSelectedVenue(venue);
+    }, []);
+
+    const handleClose = useCallback(() => {
+        setSelectedVenue(null);
+    }, []);
+
     return (
-        <MapContainer
-            center={istanbulCenter}
-            zoom={300}
-            minZoom={10}
-            maxZoom={18}
-            maxBounds={istanbulBounds}
-            maxBoundsViscosity={1.0}
-            style={{ height: "100%", width: "100%" }}
-            className="istanbul-map"
-        >
-            <TileLayer
-                attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
-                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-            />
-            <TileLayer
-                attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
-                url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
-                opacity={0.7}
-            />
-            <MapBoundsController />
-            {venues.map((venue) => (
-                <Marker key={venue.id} position={venue.coordinates} icon={createHeatmapIcon()}>
-                    <Popup maxWidth={320} minWidth={280} className="custom-popup">
-                        <VenuePopup venue={venue} />
-                    </Popup>
-                </Marker>
-            ))}
-        </MapContainer>
+        <div style={{ position: "relative", height: "100%", width: "100%" }}>
+            <MapContainer
+                center={istanbulCenter}
+                zoom={12}
+                minZoom={10}
+                maxZoom={18}
+                maxBounds={istanbulBounds}
+                maxBoundsViscosity={1.0}
+                style={{ height: "100%", width: "100%" }}
+                className="istanbul-map"
+            >
+                <TileLayer
+                    attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                />
+                <TileLayer
+                    attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
+                    opacity={0.7}
+                />
+                <MapBoundsController />
+                {venues.map((venue) => (
+                    <Marker
+                        key={venue.id}
+                        position={venue.coordinates}
+                        icon={createHeatmapIcon()}
+                        eventHandlers={{
+                            click: () => handleMarkerClick(venue),
+                        }}
+                    />
+                ))}
+            </MapContainer>
+
+            {selectedVenue && (
+                <VenueCard venue={selectedVenue} onClose={handleClose} />
+            )}
+        </div>
     );
 }
