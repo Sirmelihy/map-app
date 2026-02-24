@@ -17,8 +17,8 @@ export default function Home() {
   return (
     <div className="map-container">
       <header className="map-header">
-        <h1>İstanbul Keşfet</h1>
-        <p>Tarihi mekanları keşfetmek için işaretçilere tıklayın</p>
+        <h1>Türk Müziği Kültürel Bellek ve Mekân Haritası</h1>
+        <p>Kültürel mekanları keşfetmek için işaretçilere tıklayın</p>
       </header>
       <IstanbulMap />
     </div>

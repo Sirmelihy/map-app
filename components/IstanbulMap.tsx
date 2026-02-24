@@ -1,6 +1,6 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap, ZoomControl } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { venues, type Venue } from "@/lib/venues";
@@ -14,22 +14,22 @@ const createHeatmapIcon = () => L.divIcon({
     iconAnchor: [20, 20],
 });
 
-// Istanbul bounds - restrict navigation to Istanbul area
-const istanbulBounds: L.LatLngBoundsExpression = [
-    [40.8, 28.5], // Southwest corner
-    [41.3, 29.4], // Northeast corner
+// Turkey bounds - restrict navigation to Turkey area
+const turkeyBounds: L.LatLngBoundsExpression = [
+    [33.5, 22.5], // Southwest corner
+    [45.5, 48.0], // Northeast corner
 ];
 
-// Istanbul center coordinates
-const istanbulCenter: L.LatLngExpression = [41.0082, 28.9784];
+// Turkey center coordinates
+const turkeyCenter: L.LatLngExpression = [39.0, 35.2];
 
 function MapBoundsController() {
     const map = useMap();
 
     useEffect(() => {
-        map.setMaxBounds(istanbulBounds);
+        map.setMaxBounds(turkeyBounds);
         map.on("drag", () => {
-            map.panInsideBounds(istanbulBounds, { animate: false });
+            map.panInsideBounds(turkeyBounds, { animate: false });
         });
     }, [map]);
 
@@ -59,10 +59,6 @@ function VenueCard({ venue, onClose }: { venue: Venue; onClose: () => void }) {
     );
 }
 
-function MarkerEvents({ venue, onSelect }: { venue: Venue; onSelect: (v: Venue) => void }) {
-    return null;
-}
-
 export default function IstanbulMap() {
     const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
 
@@ -77,24 +73,21 @@ export default function IstanbulMap() {
     return (
         <div style={{ position: "relative", height: "100%", width: "100%" }}>
             <MapContainer
-                center={istanbulCenter}
-                zoom={12}
-                minZoom={10}
+                center={turkeyCenter}
+                zoom={7}
+                minZoom={5}
                 maxZoom={18}
-                maxBounds={istanbulBounds}
+                maxBounds={turkeyBounds}
                 maxBoundsViscosity={1.0}
+                zoomControl={false}
                 style={{ height: "100%", width: "100%" }}
                 className="istanbul-map"
             >
                 <TileLayer
-                    attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
-                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <TileLayer
-                    attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
-                    url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
-                    opacity={0.7}
-                />
+                <ZoomControl position="bottomright" />
                 <MapBoundsController />
                 {venues.map((venue) => (
                     <Marker
