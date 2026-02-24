@@ -4,7 +4,9 @@ import { MapContainer, TileLayer, Marker, useMap, ZoomControl } from "react-leaf
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState, useCallback } from "react";
-import { Venue } from "@/app/page";
+import { Venue } from "@/hooks/useVenues";
+import Image from "next/image";
+import { useVenueImage } from "@/hooks/useVenueImage";
 
 const hexToRgb = (hex?: string) => {
     if (!hex || typeof hex !== "string") {
@@ -62,23 +64,73 @@ function MapBoundsController() {
 }
 
 function VenueCard({ venue, onClose }: { venue: Venue; onClose: () => void }) {
+    const { data: imageUrl, isLoading: imageLoading } = useVenueImage(venue.id);
+
     return (
-        <div className="venue-card">
-            <button className="venue-card-close" onClick={onClose} aria-label="Kapat">
+        <div className="absolute top-20 left-4 z-[1100] w-80 bg-slate-900/[0.92] backdrop-blur-2xl border border-white/12 rounded-2xl overflow-hidden shadow-[0_16px_48px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.06)] animate-slideIn">
+            {/* Close Button */}
+            <button
+                className="absolute top-2.5 right-2.5 z-10 w-8 h-8 border-none rounded-full bg-black/55 text-white text-sm cursor-pointer flex items-center justify-center transition-colors duration-200 hover:bg-black/80"
+                onClick={onClose}
+                aria-label="Kapat"
+            >
                 ✕
             </button>
-            <div className="venue-image-container">
-                <img
-                    src={'/dolmabahce.jpg'}
-                    alt={venue.name}
-                    className="venue-image"
-                    loading="lazy"
-                />
+
+            {/* Image Section */}
+            <div className="relative w-full h-44 overflow-hidden group">
+                {imageLoading ? (
+                    <div className="w-full h-full animate-shimmer bg-[length:200%_100%]"
+                        style={{
+                            backgroundImage: "linear-gradient(110deg, rgba(30,41,59,0.8) 30%, rgba(51,65,85,0.6) 50%, rgba(30,41,59,0.8) 70%)"
+                        }}
+                    />
+                ) : imageUrl ? (
+                    <Image
+                        src={imageUrl}
+                        alt={venue.title || "Mekan Resmi"}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        loading="lazy"
+                        width={200}
+                        height={200}
+                    />
+                ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-slate-800/70 text-slate-500">
+                        <svg className="opacity-50" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <polyline points="21 15 16 10 5 21" />
+                        </svg>
+                        <span className="text-xs font-medium tracking-wide">Resim bulunamadı</span>
+                    </div>
+                )}
             </div>
-            <div className="venue-content">
-                <span className="venue-category">{venue.category.name}</span>
-                <h3 className="venue-name">{venue.name}</h3>
-                <p className="venue-description">{venue.description}</p>
+
+            {/* Content Section */}
+            <div className="flex flex-col gap-2.5 p-4">
+                {/* Category Badge */}
+                <div className="self-start">
+                    <span
+                        className="inline-flex items-center px-3 py-1 rounded-full text-[0.68rem] font-semibold uppercase tracking-wide text-white shadow-lg"
+                        style={{
+                            background: `linear-gradient(135deg, ${venue.category.hex_color}, ${venue.category.hex_color}cc)`,
+                        }}
+                    >
+                        {venue.category.name}
+                    </span>
+                </div>
+
+                {/* Venue Name */}
+                <h3 className="text-lg font-bold text-slate-100 leading-snug">
+                    {venue.title}
+                </h3>
+
+                {/* Description */}
+                {venue.description && (
+                    <p className="text-sm text-slate-400 leading-relaxed line-clamp-3">
+                        {venue.description}
+                    </p>
+                )}
             </div>
         </div>
     );
@@ -100,7 +152,7 @@ export default function IstanbulMap({ venues }: TurkeyMapProps) {
     }, []);
 
     return (
-        <div style={{ position: "relative", height: "100%", width: "100%" }}>
+        <div className="relative h-full w-full">
             <MapContainer
                 center={turkeyCenter}
                 zoom={7}
@@ -110,7 +162,6 @@ export default function IstanbulMap({ venues }: TurkeyMapProps) {
                 maxBoundsViscosity={1.0}
                 zoomControl={false}
                 style={{ height: "100%", width: "100%" }}
-                className="istanbul-map"
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
