@@ -8,36 +8,23 @@ import { Venue } from "@/hooks/useVenues";
 import Image from "next/image";
 import { useVenueImage } from "@/hooks/useVenueImage";
 
-const hexToRgb = (hex?: string) => {
-    if (!hex || typeof hex !== "string") {
-        return { r: 255, g: 0, b: 0 }; // fallback
-    }
-
-    const cleaned = hex.replace("#", "");
-    const bigint = parseInt(cleaned, 16);
-
-    return {
-        r: (bigint >> 16) & 255,
-        g: (bigint >> 8) & 255,
-        b: bigint & 255,
-    };
-};
-
-const createHeatmapIcon = (color: string) => {
-    const { r, g, b } = hexToRgb(color);
+const createMarkerIcon = (color: string) => {
+    const hex = color || "#EF4444";
 
     return L.divIcon({
-        className: "heatmap-marker",
+        className: "custom-marker",
         html: `
-      <div 
-        class="heatmap-dot"
-        style="--heat-r:${r}; --heat-g:${g}; --heat-b:${b};"
-      >
-        <div class="heatmap-pulse"></div>
-      </div>
+      <svg width="28" height="40" viewBox="0 0 28 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <filter id="shadow-${hex.replace('#', '')}" x="-20%" y="-10%" width="140%" height="130%">
+          <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#000" flood-opacity="0.3"/>
+        </filter>
+        <path d="M14 0C6.268 0 0 6.268 0 14c0 9.942 12.12 24.41 12.64 25.015a1.776 1.776 0 0 0 2.72 0C15.88 38.41 28 23.942 28 14 28 6.268 21.732 0 14 0z" fill="${hex}" filter="url(#shadow-${hex.replace('#', '')})"/>
+        <circle cx="14" cy="14" r="5.5" fill="white" opacity="0.95"/>
+      </svg>
     `,
-        iconSize: [40, 40],
-        iconAnchor: [20, 20],
+        iconSize: [28, 40],
+        iconAnchor: [14, 40],
+        popupAnchor: [0, -40],
     });
 };
 
@@ -173,7 +160,7 @@ export default function IstanbulMap({ venues }: TurkeyMapProps) {
                     <Marker
                         key={venue.id}
                         position={[venue.latitude, venue.longitude]}
-                        icon={createHeatmapIcon(venue.category.hex_color)}
+                        icon={createMarkerIcon(venue.category.hex_color)}
                         eventHandlers={{
                             click: () => handleMarkerClick(venue),
                         }}
