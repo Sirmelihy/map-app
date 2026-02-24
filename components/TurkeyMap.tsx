@@ -82,14 +82,14 @@ function VenueCard({ venue, onClose }: { venue: Venue; onClose: () => void }) {
                         height={200}
                     />
                 ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-slate-800/70 text-slate-500">
-                        <svg className="opacity-50" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                            <circle cx="8.5" cy="8.5" r="1.5" />
-                            <polyline points="21 15 16 10 5 21" />
-                        </svg>
-                        <span className="text-xs font-medium tracking-wide">Resim bulunamadı</span>
-                    </div>
+                    <Image
+                        src={'/no-image.jpg'}
+                        alt={venue.title || "Mekan Resmi"}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        loading="lazy"
+                        width={200}
+                        height={200}
+                    />
                 )}
             </div>
 
