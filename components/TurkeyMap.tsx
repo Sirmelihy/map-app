@@ -3,16 +3,41 @@
 import { MapContainer, TileLayer, Marker, useMap, ZoomControl } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { venues, type Venue } from "@/lib/venues";
 import { useEffect, useState, useCallback } from "react";
+import { Venue } from "@/app/page";
 
-// Heatmap style glowing circle marker
-const createHeatmapIcon = () => L.divIcon({
-    className: "heatmap-marker",
-    html: `<div class="heatmap-dot"><div class="heatmap-pulse"></div></div>`,
-    iconSize: [40, 40],
-    iconAnchor: [20, 20],
-});
+const hexToRgb = (hex?: string) => {
+    if (!hex || typeof hex !== "string") {
+        return { r: 255, g: 0, b: 0 }; // fallback
+    }
+
+    const cleaned = hex.replace("#", "");
+    const bigint = parseInt(cleaned, 16);
+
+    return {
+        r: (bigint >> 16) & 255,
+        g: (bigint >> 8) & 255,
+        b: bigint & 255,
+    };
+};
+
+const createHeatmapIcon = (color: string) => {
+    const { r, g, b } = hexToRgb(color);
+
+    return L.divIcon({
+        className: "heatmap-marker",
+        html: `
+      <div 
+        class="heatmap-dot"
+        style="--heat-r:${r}; --heat-g:${g}; --heat-b:${b};"
+      >
+        <div class="heatmap-pulse"></div>
+      </div>
+    `,
+        iconSize: [40, 40],
+        iconAnchor: [20, 20],
+    });
+};
 
 // Turkey bounds - restrict navigation to Turkey area
 const turkeyBounds: L.LatLngBoundsExpression = [
@@ -44,14 +69,14 @@ function VenueCard({ venue, onClose }: { venue: Venue; onClose: () => void }) {
             </button>
             <div className="venue-image-container">
                 <img
-                    src={venue.imageUrl}
+                    src={'/dolmabahce.jpg'}
                     alt={venue.name}
                     className="venue-image"
                     loading="lazy"
                 />
             </div>
             <div className="venue-content">
-                <span className="venue-category">{venue.category}</span>
+                <span className="venue-category">{venue.category.name}</span>
                 <h3 className="venue-name">{venue.name}</h3>
                 <p className="venue-description">{venue.description}</p>
             </div>
@@ -59,7 +84,11 @@ function VenueCard({ venue, onClose }: { venue: Venue; onClose: () => void }) {
     );
 }
 
-export default function IstanbulMap() {
+type TurkeyMapProps = {
+    venues: Venue[]
+}
+
+export default function IstanbulMap({ venues }: TurkeyMapProps) {
     const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
 
     const handleMarkerClick = useCallback((venue: Venue) => {
@@ -92,8 +121,8 @@ export default function IstanbulMap() {
                 {venues.map((venue) => (
                     <Marker
                         key={venue.id}
-                        position={venue.coordinates}
-                        icon={createHeatmapIcon()}
+                        position={[venue.latitude, venue.longitude]}
+                        icon={createHeatmapIcon(venue.category.hex_color)}
                         eventHandlers={{
                             click: () => handleMarkerClick(venue),
                         }}

@@ -224,6 +224,10 @@ body {
 }
 
 .heatmap-dot {
+  --heat-r: 255;
+  --heat-g: 0;
+  --heat-b: 0;
+
   position: relative;
   width: 40px;
   height: 40px;
@@ -238,17 +242,21 @@ body {
   position: absolute;
   width: 20px;
   height: 20px;
+
   background: radial-gradient(circle,
-      rgba(255, 80, 80, 1) 0%,
-      rgba(255, 50, 50, 0.9) 30%,
-      rgba(255, 0, 0, 0.4) 60%,
+      rgba(var(--heat-r), var(--heat-g), var(--heat-b), 1) 0%,
+      rgba(var(--heat-r), var(--heat-g), var(--heat-b), 0.9) 30%,
+      rgba(var(--heat-r), var(--heat-g), var(--heat-b), 0.4) 60%,
       transparent 100%);
+
   border-radius: 50%;
   z-index: 2;
+
   box-shadow:
-    0 0 10px rgba(255, 50, 50, 1),
-    0 0 20px rgba(255, 50, 50, 0.8),
-    0 0 40px rgba(255, 0, 0, 0.5);
+    0 0 10px rgba(var(--heat-r), var(--heat-g), var(--heat-b), 1),
+    0 0 20px rgba(var(--heat-r), var(--heat-g), var(--heat-b), 0.8),
+    0 0 40px rgba(var(--heat-r), var(--heat-g), var(--heat-b), 0.5);
+
   transition: all 0.3s ease;
 }
 
@@ -256,7 +264,11 @@ body {
   position: absolute;
   width: 40px;
   height: 40px;
-  background: radial-gradient(circle, rgba(255, 80, 80, 0.5) 0%, transparent 70%);
+
+  background: radial-gradient(circle,
+      rgba(var(--heat-r), var(--heat-g), var(--heat-b), 0.5) 0%,
+      transparent 70%);
+
   border-radius: 50%;
   animation: pulse 2s ease-out infinite;
 }
