@@ -3,31 +3,25 @@ import L from "leaflet";
 // --- Map Boundaries & Center ---
 
 export const TURKEY_BOUNDS: L.LatLngBoundsExpression = [
-    [33.5, 22.5],
-    [45.5, 48.0],
+  [33.5, 22.5],
+  [45.5, 48.0],
 ];
 
 export const TURKEY_CENTER: L.LatLngExpression = [39.0, 35.2];
 
-// --- Supabase Storage ---
+// --- Supabase Storage (re-exported from shared utils) ---
 
-const STORAGE_BUCKET = "mekan_resimleri";
-export const FALLBACK_IMAGE = "/no-image.jpg";
-
-export function getVenueImageUrl(imagePath: string | null): string {
-    if (!imagePath) return FALLBACK_IMAGE;
-    return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${imagePath}`;
-}
+export { getVenueImageUrl, FALLBACK_IMAGE } from "@/lib/venue-utils";
 
 // --- Custom Marker Icon ---
 
 export function createMarkerIcon(color: string): L.DivIcon {
-    const hex = color || "#EF4444";
-    const id = hex.replace("#", "");
+  const hex = color || "#EF4444";
+  const id = hex.replace("#", "");
 
-    return L.divIcon({
-        className: "custom-marker",
-        html: `
+  return L.divIcon({
+    className: "custom-marker",
+    html: `
       <svg width="28" height="40" viewBox="0 0 28 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <filter id="shadow-${id}" x="-20%" y="-10%" width="140%" height="130%">
           <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#000" flood-opacity="0.3"/>
@@ -36,8 +30,8 @@ export function createMarkerIcon(color: string): L.DivIcon {
         <circle cx="14" cy="14" r="5.5" fill="white" opacity="0.95"/>
       </svg>
     `,
-        iconSize: [28, 40],
-        iconAnchor: [14, 40],
-        popupAnchor: [0, -40],
-    });
+    iconSize: [28, 40],
+    iconAnchor: [14, 40],
+    popupAnchor: [0, -40],
+  });
 }
