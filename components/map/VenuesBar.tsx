@@ -6,6 +6,8 @@ import Image from "next/image";
 import { Venue, Category } from "@/hooks/useVenues";
 import { getVenueImageUrl } from "./constants";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
@@ -30,7 +32,7 @@ function getUniqueCategories(venues: Venue[]): Category[] {
 
 function VenueThumb({ venue }: { venue: Venue }) {
     return (
-        <div className="relative w-full h-20 overflow-hidden rounded-t-xl bg-slate-800">
+        <div className="relative w-full h-20 overflow-hidden rounded-t-lg bg-muted">
             <Image
                 src={getVenueImageUrl(venue.image_path)}
                 alt={venue.title}
@@ -55,10 +57,6 @@ function CategoryDropdown({
     const [open, setOpen] = useState(false);
     const isFiltered = selected !== "all";
 
-    const itemClass = (active: boolean) =>
-        `w-full flex items-center gap-2 px-3.5 py-2.5 text-xs transition-colors duration-100 cursor-pointer ${active ? "bg-white/10 text-white font-semibold" : "text-slate-300 hover:bg-white/6"
-        }`;
-
     const choose = (name: string) => {
         onSelect(name);
         setOpen(false);
@@ -68,12 +66,9 @@ function CategoryDropdown({
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
-                    variant="ghost"
+                    variant={isFiltered ? "default" : "outline"}
                     size="sm"
-                    className={`flex items-center gap-1.5 rounded-lg text-xs font-medium cursor-pointer ${isFiltered
-                        ? "bg-blue-500/20 text-blue-300 border border-blue-400/25"
-                        : "bg-white/6 text-slate-400 border border-white/8 hover:bg-white/10 hover:text-slate-300"
-                        }`}
+                    className="flex items-center gap-1.5 text-xs cursor-pointer"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <Filter size={13} />
@@ -85,16 +80,25 @@ function CategoryDropdown({
                 side="top"
                 align="end"
                 sideOffset={4}
-                className="z-[1200] w-52 max-h-64 overflow-y-auto p-0 bg-slate-800/95 backdrop-blur-2xl border-white/12 rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.5)]"
+                className="z-[1200] w-52 max-h-64 overflow-y-auto p-1"
             >
-                <button onClick={() => choose("all")} className={itemClass(selected === "all")}>
+                <button
+                    onClick={() => choose("all")}
+                    className={`w-full flex items-center gap-2 px-3 py-2 text-xs rounded-md cursor-pointer transition-colors ${selected === "all"
+                        ? "bg-accent text-accent-foreground font-semibold"
+                        : "text-popover-foreground hover:bg-accent"
+                        }`}
+                >
                     Tümü
                 </button>
                 {categories.map((cat) => (
                     <button
                         key={cat.name}
                         onClick={() => choose(cat.name)}
-                        className={itemClass(selected === cat.name)}
+                        className={`w-full flex items-center gap-2 px-3 py-2 text-xs rounded-md cursor-pointer transition-colors ${selected === cat.name
+                            ? "bg-accent text-accent-foreground font-semibold"
+                            : "text-popover-foreground hover:bg-accent"
+                            }`}
                     >
                         <span
                             className="w-2 h-2 rounded-full shrink-0"
@@ -131,33 +135,31 @@ export default function VenuesBar({ venues, onSelectVenue }: Props) {
     return (
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <div
-                className={`absolute bottom-0 left-0 right-0 z-[1100] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? "translate-y-0" : "translate-y-[calc(100%-44px)]"
+                className={`absolute bottom-0 left-0 right-0 z-[1000] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? "translate-y-0" : "translate-y-[calc(100%-44px)]"
                     }`}
             >
                 {/* Toggle Handle */}
                 <CollapsibleTrigger asChild>
-                    <div
-                        className="flex items-center justify-between px-5 h-[44px] bg-slate-900/90 backdrop-blur-2xl border-t border-x border-white/10 rounded-t-2xl cursor-pointer select-none hover:bg-slate-800/90 transition-colors duration-200"
-                    >
+                    <div className="flex items-center justify-between px-3 sm:px-5 h-[44px] bg-card border-t border-x border-border rounded-t-xl cursor-pointer select-none hover:bg-accent transition-colors">
                         <div className="flex items-center gap-2">
                             {isOpen ? (
-                                <ChevronDown size={18} className="text-slate-400" />
+                                <ChevronDown size={18} className="text-muted-foreground" />
                             ) : (
-                                <ChevronUp size={18} className="text-slate-400" />
+                                <ChevronUp size={18} className="text-muted-foreground" />
                             )}
-                            <span className="text-sm font-medium text-slate-300">Mekanlar</span>
-                            <span className="text-[0.65rem] text-slate-500 bg-white/5 px-2 py-0.5 rounded-full">
+                            <span className="text-sm font-medium text-foreground">Mekanlar</span>
+                            <Badge variant="secondary" className="text-[0.65rem] px-2 py-0.5">
                                 {filtered.length}
-                            </span>
+                            </Badge>
                         </div>
                     </div>
                 </CollapsibleTrigger>
 
                 {/* Panel Body */}
                 <CollapsibleContent>
-                    <div className="bg-slate-900/[0.94] backdrop-blur-2xl border-x border-white/10 pb-4">
+                    <div className="bg-card border-x border-border pb-4">
                         {/* Filter Row */}
-                        <div className="flex items-center justify-end px-5 py-2.5 border-b border-white/6">
+                        <div className="flex items-center justify-end px-3 sm:px-5 py-2.5 border-b border-border">
                             <CategoryDropdown
                                 categories={categories}
                                 selected={selectedCategory}
@@ -166,33 +168,35 @@ export default function VenuesBar({ venues, onSelectVenue }: Props) {
                         </div>
 
                         {/* Horizontal Venue List */}
-                        <div className="flex gap-3 px-5 pt-3 overflow-x-auto venues-scroll pb-1">
+                        <div className="flex gap-2 sm:gap-3 px-3 sm:px-5 pt-3 overflow-x-auto venues-scroll pb-1">
                             {filtered.length > 0 ? (
                                 filtered.map((venue) => (
-                                    <button
+                                    <Card
                                         key={venue.id}
                                         onClick={() => onSelectVenue(venue)}
-                                        className="shrink-0 w-40 bg-white/[0.04] border border-white/8 rounded-xl overflow-hidden cursor-pointer transition-all duration-200 hover:bg-white/[0.08] hover:border-white/15 hover:scale-[1.03] hover:shadow-lg group text-left"
+                                        className="shrink-0 w-32 sm:w-40 p-0 gap-0 cursor-pointer transition-all hover:shadow-md hover:scale-[1.02] group"
                                     >
                                         <VenueThumb venue={venue} />
-                                        <div className="p-2.5">
-                                            <p className="text-[0.72rem] font-semibold text-slate-200 leading-snug truncate group-hover:text-white transition-colors">
+                                        <div className="p-2 sm:p-2.5">
+                                            <p className="text-xs font-semibold text-card-foreground leading-snug truncate">
                                                 {venue.title}
                                             </p>
-                                            <span
-                                                className="inline-block mt-1 text-[0.6rem] px-1.5 py-0.5 rounded-md font-medium text-white/80"
+                                            <Badge
+                                                variant="outline"
+                                                className="mt-1 text-[0.6rem] px-1.5 py-0.5"
                                                 style={{
-                                                    backgroundColor: venue.category.hex_color + "33",
+                                                    backgroundColor: venue.category.hex_color + "1A",
                                                     color: venue.category.hex_color,
+                                                    borderColor: venue.category.hex_color + "40",
                                                 }}
                                             >
                                                 {venue.category.name}
-                                            </span>
+                                            </Badge>
                                         </div>
-                                    </button>
+                                    </Card>
                                 ))
                             ) : (
-                                <div className="flex-1 text-center py-6 text-sm text-slate-500">
+                                <div className="flex-1 text-center py-6 text-sm text-muted-foreground">
                                     Bu kategoride mekan bulunamadı
                                 </div>
                             )}

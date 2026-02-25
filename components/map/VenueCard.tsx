@@ -18,12 +18,12 @@ export default function VenueCard({ venue, onClose }: Props) {
     const imageUrl = getVenueImageUrl(venue.image_path);
 
     return (
-        <Card className="absolute top-20 left-4 z-[1100] w-80 gap-0 p-0 bg-slate-900/[0.92] backdrop-blur-2xl border-white/12 overflow-hidden shadow-[0_16px_48px_rgba(0,0,0,0.45)] animate-slideIn">
+        <Card className="absolute top-16 sm:top-20 left-2 sm:left-4 z-[1100] w-[calc(100vw-1rem)] sm:w-80 gap-0 p-0 bg-card border-border overflow-hidden shadow-xl animate-slideIn">
             {/* Close */}
             <Button
                 variant="ghost"
                 size="icon-sm"
-                className="absolute top-2.5 right-2.5 z-10 rounded-full bg-black/55 text-white hover:bg-black/80"
+                className="absolute top-2.5 right-2.5 z-10 rounded-full bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer"
                 onClick={onClose}
                 aria-label="Kapat"
             >
@@ -31,7 +31,7 @@ export default function VenueCard({ venue, onClose }: Props) {
             </Button>
 
             {/* Image */}
-            <div className="relative w-full h-44 overflow-hidden group">
+            <div className="relative w-full h-36 sm:h-44 overflow-hidden group">
                 <Image
                     src={imageUrl}
                     alt={venue.title || "Mekan Resmi"}
@@ -43,7 +43,7 @@ export default function VenueCard({ venue, onClose }: Props) {
             </div>
 
             {/* Content */}
-            <CardContent className="flex flex-col gap-2.5 p-4">
+            <CardContent className="flex flex-col gap-2.5 p-3 sm:p-4">
                 <Badge
                     className="self-start uppercase tracking-wide text-[0.68rem] text-white shadow-lg border-0"
                     style={{
@@ -53,12 +53,12 @@ export default function VenueCard({ venue, onClose }: Props) {
                     {venue.category.name}
                 </Badge>
 
-                <h3 className="text-lg font-bold text-slate-100 leading-snug">
+                <h3 className="text-base sm:text-lg font-bold text-card-foreground leading-snug">
                     {venue.title}
                 </h3>
 
                 {venue.description && (
-                    <p className="text-sm text-slate-400 leading-relaxed line-clamp-3">
+                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
                         {venue.description}
                     </p>
                 )}

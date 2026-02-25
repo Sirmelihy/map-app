@@ -47,7 +47,7 @@ export default function TurkeyMap({ venues }: TurkeyMapProps) {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <ZoomControl position="bottomright" />
+                <ZoomControl position="topright" />
                 <MapBoundsController />
                 <FlyToVenue venue={selectedVenue} />
 

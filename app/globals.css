@@ -120,6 +120,11 @@ body {
 }
 
 
+/* Push leaflet zoom controls below the header */
+.leaflet-top.leaflet-right {
+  top: 80px;
+}
+
 .custom-marker {
   background: none !important;
   border: none !important;
