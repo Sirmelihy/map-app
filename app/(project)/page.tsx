@@ -34,20 +34,15 @@ export default function HomePage() {
             <div className="relative z-10 flex flex-col items-center justify-center h-full px-4">
                 {/* Title Section */}
                 <div className="text-center mb-10 animate-slideIn">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.06] backdrop-blur-xl border border-white/[0.1] rounded-full mb-6">
-                        <Music className="size-4 text-blue-400" />
-                        <span className="text-xs font-medium text-slate-300 tracking-wide">
-                            Kültürel Bellek Haritası
-                        </span>
-                    </div>
+
                     <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-4">
-                        Türk Müziği
+                        Türk Müziği Kültürel Bellek
                         <br />
-                        <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
+                        <span className="bg-gradient-to-r from-primary-400 via-purple-400 to-blue-400 bg-clip-text text-primary">
                             Mekân Haritası
                         </span>
                     </h1>
-                    <p className="text-base sm:text-lg text-slate-400 max-w-md mx-auto leading-relaxed">
+                    <p className="text-base sm:text-lg text-foreground max-w-md mx-auto leading-relaxed">
                         Kültürel mekanları keşfedin, müziğin izlerini takip edin
                     </p>
                 </div>
@@ -60,7 +55,7 @@ export default function HomePage() {
                 {/* Map Button */}
                 <Button
                     onClick={() => router.push("/map")}
-                    className="group relative bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-2xl h-12 px-8 font-semibold text-sm shadow-lg shadow-blue-500/25 transition-all duration-300 hover:shadow-blue-500/40 hover:scale-[1.03] cursor-pointer"
+                    className="px-4 py-4 cursor-pointer"
                 >
                     <Map className="size-4 mr-2 transition-transform duration-300 group-hover:scale-110" />
                     Haritayı Keşfet
