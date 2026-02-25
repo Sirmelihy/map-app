@@ -4,6 +4,7 @@
   --animate-slideIn: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-shimmer: shimmer 1.5s ease-in-out infinite;
   --animate-fadeIn: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-slideUp: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 html,
@@ -60,4 +61,34 @@ body {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Venues bar horizontal scrollbar */
+.venues-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.venues-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.venues-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.venues-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }

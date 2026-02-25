@@ -15,6 +15,7 @@ export interface Venue {
     hidden: boolean;
     category_id: string;
     category: Category;
+    image_path: string | null;
 }
 
 export function useVenues() {
