@@ -1,78 +1,67 @@
 "use client";
 
-import { useState, useRef, useMemo, useEffect } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Search, X } from "lucide-react";
 import { Venue } from "@/hooks/useVenues";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 type Props = {
     venues: Venue[];
     onSelectVenue: (venue: Venue) => void;
 };
 
-/** Full-screen search overlay for venues. */
+/** Search overlay for venues using Popover. */
 export default function SearchOverlay({ venues, onSelectVenue }: Props) {
-    const [isOpen, setIsOpen] = useState(false);
+    const [open, setOpen] = useState(false);
     const [query, setQuery] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
 
-    const results = useMemo(() => {
-        const q = query.trim().toLowerCase();
-        if (!q) return [];
-        return venues.filter((v) => v.title.toLowerCase().includes(q)).slice(0, 6);
-    }, [query, venues]);
+    const results = query.trim()
+        ? venues.filter((v) => v.title.toLowerCase().includes(query.trim().toLowerCase())).slice(0, 6)
+        : [];
 
-    // Focus input on open, clear query on close
-    useEffect(() => {
-        if (isOpen) {
-            setTimeout(() => inputRef.current?.focus(), 100);
-        } else {
+    const handleSelect = useCallback(
+        (venue: Venue) => {
+            onSelectVenue(venue);
+            setOpen(false);
             setQuery("");
-        }
-    }, [isOpen]);
-
-    // Close on outside click
-    useEffect(() => {
-        if (!isOpen) return;
-        const handler = (e: MouseEvent) => {
-            if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-                setIsOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handler);
-        return () => document.removeEventListener("mousedown", handler);
-    }, [isOpen]);
-
-    // Close on Escape
-    useEffect(() => {
-        if (!isOpen) return;
-        const handler = (e: KeyboardEvent) => {
-            if (e.key === "Escape") setIsOpen(false);
-        };
-        document.addEventListener("keydown", handler);
-        return () => document.removeEventListener("keydown", handler);
-    }, [isOpen]);
-
-    const handleSelect = (venue: Venue) => {
-        onSelectVenue(venue);
-        setIsOpen(false);
-    };
+        },
+        [onSelectVenue],
+    );
 
     return (
-        <div ref={containerRef} className="absolute top-4 right-4 z-[1100]">
-            {!isOpen ? (
-                <button
-                    onClick={() => setIsOpen(true)}
-                    className="w-11 h-11 rounded-full bg-slate-900/85 backdrop-blur-xl border border-white/12 text-white flex items-center justify-center cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-all duration-200 hover:bg-slate-800/90 hover:scale-105 hover:shadow-[0_6px_28px_rgba(0,0,0,0.5)]"
-                    aria-label="Ara"
+        <div className="absolute top-4 right-4 z-[1100]">
+            <Popover
+                open={open}
+                onOpenChange={(v) => {
+                    setOpen(v);
+                    if (!v) setQuery("");
+                }}
+            >
+                <PopoverTrigger asChild>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="w-11 h-11 rounded-full bg-slate-900/85 backdrop-blur-xl border border-white/12 text-white shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:bg-slate-800/90 hover:scale-105 hover:shadow-[0_6px_28px_rgba(0,0,0,0.5)]"
+                        aria-label="Ara"
+                    >
+                        <Search className="text-slate-400" />
+                    </Button>
+                </PopoverTrigger>
+
+                <PopoverContent
+                    align="end"
+                    sideOffset={8}
+                    className="z-[1200] w-80 p-0 bg-slate-900/[0.92] backdrop-blur-2xl border-white/12 rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.45)]"
+                    onOpenAutoFocus={(e) => {
+                        e.preventDefault();
+                        setTimeout(() => inputRef.current?.focus(), 50);
+                    }}
                 >
-                    <Search className="text-slate-400" />
-                </button>
-            ) : (
-                <div className="w-80 bg-slate-900/[0.92] backdrop-blur-2xl border border-white/12 rounded-2xl overflow-hidden shadow-[0_16px_48px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.06)] animate-fadeIn">
                     {/* Input */}
                     <div className="flex items-center gap-2 px-4 py-3 border-b border-white/8">
-                        <Search className="text-slate-400" />
+                        <Search className="size-4 shrink-0 text-slate-400" />
                         <input
                             ref={inputRef}
                             type="text"
@@ -81,13 +70,15 @@ export default function SearchOverlay({ venues, onSelectVenue }: Props) {
                             placeholder="Mekan ara..."
                             className="flex-1 bg-transparent border-none outline-none text-sm text-slate-100 placeholder:text-slate-500"
                         />
-                        <button
-                            onClick={() => setIsOpen(false)}
-                            className="w-6 h-6 rounded-full bg-white/8 text-slate-400 text-xs flex items-center justify-center cursor-pointer hover:bg-white/15 hover:text-white transition-colors duration-150"
+                        <Button
+                            variant="ghost"
+                            size="icon-xs"
+                            className="rounded-full bg-white/8 text-slate-400 hover:bg-white/15 hover:text-white"
+                            onClick={() => setOpen(false)}
                             aria-label="Kapat"
                         >
-                            <X className="text-slate-400" />
-                        </button>
+                            <X />
+                        </Button>
                     </div>
 
                     {/* Results */}
@@ -121,8 +112,8 @@ export default function SearchOverlay({ venues, onSelectVenue }: Props) {
                             )}
                         </div>
                     )}
-                </div>
-            )}
+                </PopoverContent>
+            </Popover>
         </div>
     );
 }
