@@ -31,7 +31,7 @@ export default function SearchOverlay({ venues, onSelectVenue }: Props) {
     );
 
     return (
-        <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-[1100]">
+        <div className="absolute z-[1100]" style={{ top: 'calc(0.5rem + var(--safe-top))', right: 'calc(0.5rem + var(--safe-right))' }}>
             <Popover
                 open={open}
                 onOpenChange={(v) => {

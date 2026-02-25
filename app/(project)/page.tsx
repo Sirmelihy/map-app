@@ -14,9 +14,9 @@ export default function HomePage() {
 
     if (isLoading) {
         return (
-            <div className="flex flex-col items-center justify-center h-screen w-screen bg-gradient-to-br from-[#0a0a1a] via-[#111827] to-[#0f172a] text-white gap-4">
-                <div className="w-12 h-12 border-4 border-white/20 border-t-blue-500 rounded-full animate-spin" />
-                <p className="text-sm font-medium tracking-wide text-white/80">
+            <div className="flex flex-col items-center justify-center h-screen w-screen text-white gap-4">
+                <div className="w-12 h-12 border-4 border-white/20 border-t-primary rounded-full animate-spin" />
+                <p className="text-sm font-medium tracking-wide text-primary">
                     Yükleniyor...
                 </p>
             </div>
@@ -31,7 +31,7 @@ export default function HomePage() {
             <HeroSlideshow />
 
             {/* Foreground Content */}
-            <div className="relative z-10 flex flex-col items-center justify-center h-full px-4">
+            <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 pt-[var(--safe-top)] pb-[var(--safe-bottom)]">
                 {/* Title Section */}
                 <div className="text-center mb-10 animate-slideIn">
 

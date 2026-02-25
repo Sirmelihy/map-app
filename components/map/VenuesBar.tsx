@@ -135,7 +135,7 @@ export default function VenuesBar({ venues, onSelectVenue }: Props) {
     return (
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <div
-                className={`absolute bottom-0 left-0 right-0 z-[1000] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? "translate-y-0" : "translate-y-[calc(100%-44px)]"
+                className={`absolute bottom-0 left-0 right-0 z-[1000] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] pb-[var(--safe-bottom)] ${isOpen ? "translate-y-0" : "translate-y-[calc(100%-44px-var(--safe-bottom))]"
                     }`}
             >
                 {/* Toggle Handle */}

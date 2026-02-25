@@ -92,8 +92,8 @@ function CategoryDropdown({
                 <button
                     onClick={() => choose("all")}
                     className={`w-full flex items-center gap-2 px-3 py-2 text-xs rounded-md cursor-pointer transition-colors ${selected === "all"
-                            ? "bg-accent text-accent-foreground font-semibold"
-                            : "text-popover-foreground hover:bg-accent"
+                        ? "bg-accent text-accent-foreground font-semibold"
+                        : "text-popover-foreground hover:bg-accent"
                         }`}
                 >
                     Tümü
@@ -103,8 +103,8 @@ function CategoryDropdown({
                         key={cat.name}
                         onClick={() => choose(cat.name)}
                         className={`w-full flex items-center gap-2 px-3 py-2 text-xs rounded-md cursor-pointer transition-colors ${selected === cat.name
-                                ? "bg-accent text-accent-foreground font-semibold"
-                                : "text-popover-foreground hover:bg-accent"
+                            ? "bg-accent text-accent-foreground font-semibold"
+                            : "text-popover-foreground hover:bg-accent"
                             }`}
                     >
                         <span
@@ -147,9 +147,9 @@ export default function HomeVenuesBar({ venues }: Props) {
     return (
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <div
-                className={`absolute bottom-0 left-0 right-0 z-[50] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen
-                        ? "translate-y-0"
-                        : "translate-y-[calc(100%-44px)]"
+                className={`absolute bottom-0 left-0 right-0 z-[50] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] pb-[var(--safe-bottom)] ${isOpen
+                    ? "translate-y-0"
+                    : "translate-y-[calc(100%-44px-var(--safe-bottom))]"
                     }`}
             >
                 {/* Toggle Handle */}

@@ -24,7 +24,7 @@ export default function MapPage() {
 
     return (
         <div className="relative h-screen w-screen overflow-hidden">
-            <header className="absolute top-0 left-0 right-0 z-[1000] pl-3 sm:pl-6 pr-14 sm:pr-20 py-3 sm:py-4 bg-gradient-to-b from-black/70 to-transparent pointer-events-none">
+            <header className="absolute top-0 left-0 right-0 z-[1000] pl-3 sm:pl-6 pr-14 sm:pr-20 bg-gradient-to-b from-black/70 to-transparent pointer-events-none" style={{ paddingTop: 'calc(0.75rem + var(--safe-top))', paddingRight: 'calc(3.5rem + var(--safe-right))' }}>
                 <div className="flex items-center gap-2 sm:gap-4">
                     <Button
                         variant="ghost"
