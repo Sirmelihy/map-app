@@ -22,6 +22,19 @@ export function useCategories() {
     });
 }
 
+export function usePublicCategories() {
+    return useQuery<Category[]>({
+        queryKey: ["public-categories"],
+        queryFn: async () => {
+            const res = await fetch("/api/public/categories");
+            if (!res.ok) {
+                throw new Error("Kategoriler yüklenirken hata oluştu");
+            }
+            return res.json();
+        },
+    });
+}
+
 export function useCreateCategory() {
     const queryClient = useQueryClient();
 

@@ -56,6 +56,17 @@ export function useVenues() {
     });
 }
 
+export function usePublicVenues() {
+    return useQuery<Venue[]>({
+        queryKey: ["public-venues"],
+        queryFn: async () => {
+            const res = await fetch("/api/public/venues");
+            if (!res.ok) throw new Error("Mekanlar yüklenirken hata oluştu");
+            return res.json();
+        },
+    });
+}
+
 export function useCreateVenue() {
     const queryClient = useQueryClient();
 

@@ -58,7 +58,7 @@ export default function VenueCard({ venue, onClose }: Props) {
                 </h3>
 
                 {venue.description && (
-                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
+                    <p className="text-sm text-muted-foreground leading-relaxed max-h-24 sm:max-h-48 overflow-y-auto no-scrollbar">
                         {venue.description}
                     </p>
                 )}

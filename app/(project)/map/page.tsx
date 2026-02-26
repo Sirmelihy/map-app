@@ -1,6 +1,6 @@
 "use client";
 
-import { useVenues } from "@/hooks/useVenues";
+import { usePublicVenues } from "@/hooks/useVenues";
 import { useRouter } from "next/navigation";
 import { Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ const TurkeyMap = dynamic(() => import("@/components/TurkeyMap"), {
 
 
 export default function MapPage() {
-    const { data: venuesData } = useVenues();
+    const { data: venuesData } = usePublicVenues();
     const router = useRouter();
 
     return (

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { MapPin, ArrowLeft, Map, Compass, Home } from "lucide-react";
-import { useVenues, Venue } from "@/hooks/useVenues";
+import { usePublicVenues, Venue } from "@/hooks/useVenues";
 import { getVenueImageUrl } from "@/lib/venue-utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +33,7 @@ type PageProps = {
 
 export default function VenueDetailPage({ params }: PageProps) {
     const { id } = use(params);
-    const { data: venues, isLoading } = useVenues();
+    const { data: venues, isLoading } = usePublicVenues();
     const router = useRouter();
 
     if (isLoading) {

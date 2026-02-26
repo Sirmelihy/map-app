@@ -1,6 +1,6 @@
 "use client";
 
-import { useVenues } from "@/hooks/useVenues";
+import { usePublicVenues } from "@/hooks/useVenues";
 import { useRouter } from "next/navigation";
 import { Map, Music, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import HomeSearchBar from "@/components/home/HomeSearchBar";
 import HomeVenuesBar from "@/components/home/HomeVenuesBar";
 
 export default function HomePage() {
-    const { data: venues, isLoading } = useVenues();
+    const { data: venues, isLoading } = usePublicVenues();
     const router = useRouter();
 
     if (isLoading) {
