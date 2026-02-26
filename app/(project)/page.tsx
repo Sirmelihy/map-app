@@ -2,7 +2,7 @@
 
 import { useVenues } from "@/hooks/useVenues";
 import { useRouter } from "next/navigation";
-import { Map, Music } from "lucide-react";
+import { Map, Music, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HeroSlideshow from "@/components/home/HeroSlideshow";
 import HomeSearchBar from "@/components/home/HomeSearchBar";
@@ -52,14 +52,24 @@ export default function HomePage() {
                     <HomeSearchBar venues={venueList} />
                 </div>
 
-                {/* Map Button */}
-                <Button
-                    onClick={() => router.push("/map")}
-                    className="px-4 py-4 cursor-pointer"
-                >
-                    <Map className="size-4 mr-2 transition-transform duration-300 group-hover:scale-110" />
-                    Haritayı Keşfet
-                </Button>
+                {/* Action Buttons */}
+                <div className="flex gap-3">
+                    <Button
+                        onClick={() => router.push("/map")}
+                        className="px-4 py-4 cursor-pointer"
+                    >
+                        <Map className="size-4 mr-2 transition-transform duration-300 group-hover:scale-110" />
+                        Haritayı Keşfet
+                    </Button>
+                    <Button
+                        variant="outline"
+                        onClick={() => router.push("/login")}
+                        className="px-4 py-4 cursor-pointer"
+                    >
+                        <LogIn className="size-4 mr-2" />
+                        Giriş Yap
+                    </Button>
+                </div>
             </div>
 
             {/* Collapsible Venues Bar */}

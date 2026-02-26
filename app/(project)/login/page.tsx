@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/supabase-client";
@@ -55,6 +56,14 @@ export default function LoginPage() {
                         <Button type="submit">{isLoading ? "Yükleniyor..." : "Giriş Yap"}</Button>
                     </form>
                 </Card>
+                <Button
+                    variant="ghost"
+                    onClick={() => router.push("/")}
+                    className="w-full mt-4 cursor-pointer text-muted-foreground hover:text-foreground"
+                >
+                    <ArrowLeft className="size-4 mr-2" />
+                    Anasayfaya Dön
+                </Button>
             </div>
 
         </div>
