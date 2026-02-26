@@ -24,7 +24,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 
 function getUniqueCategories(venues: Venue[]): Category[] {
     const map = new Map<string, Category>();
-    venues.forEach((v) => map.set(v.category.name, v.category));
+    venues.forEach((v) => { if (v.category) map.set(v.category.name, v.category); });
     return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name));
 }
 
@@ -128,7 +128,7 @@ export default function VenuesBar({ venues, onSelectVenue }: Props) {
     const shuffled = useMemo(() => shuffleArray(venues), [venues]);
 
     const filtered = useMemo(
-        () => (selectedCategory === "all" ? shuffled : shuffled.filter((v) => v.category.name === selectedCategory)),
+        () => (selectedCategory === "all" ? shuffled : shuffled.filter((v) => v.category?.name === selectedCategory)),
         [shuffled, selectedCategory],
     );
 
@@ -185,12 +185,12 @@ export default function VenuesBar({ venues, onSelectVenue }: Props) {
                                                 variant="outline"
                                                 className="mt-1 text-[0.6rem] px-1.5 py-0.5"
                                                 style={{
-                                                    backgroundColor: venue.category.hex_color + "1A",
-                                                    color: venue.category.hex_color,
-                                                    borderColor: venue.category.hex_color + "40",
+                                                    backgroundColor: (venue.category?.hex_color || "#888") + "1A",
+                                                    color: venue.category?.hex_color || "#888",
+                                                    borderColor: (venue.category?.hex_color || "#888") + "40",
                                                 }}
                                             >
-                                                {venue.category.name}
+                                                {venue.category?.name || "—"}
                                             </Badge>
                                         </div>
                                     </Card>

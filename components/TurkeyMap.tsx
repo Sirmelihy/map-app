@@ -55,7 +55,7 @@ export default function TurkeyMap({ venues }: TurkeyMapProps) {
                     <Marker
                         key={venue.id}
                         position={[venue.latitude, venue.longitude]}
-                        icon={createMarkerIcon(venue.category.hex_color)}
+                        icon={createMarkerIcon(venue.category?.hex_color || "#EF4444")}
                         eventHandlers={{ click: () => handleSelectVenue(venue) }}
                     />
                 ))}

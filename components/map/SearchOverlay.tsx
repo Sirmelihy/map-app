@@ -93,14 +93,14 @@ export default function SearchOverlay({ venues, onSelectVenue }: Props) {
                                     >
                                         <span
                                             className="w-2.5 h-2.5 rounded-full shrink-0"
-                                            style={{ backgroundColor: venue.category.hex_color }}
+                                            style={{ backgroundColor: venue.category?.hex_color || "#888" }}
                                         />
                                         <div className="flex flex-col gap-0.5 min-w-0">
                                             <span className="text-sm font-medium text-foreground truncate">
                                                 {venue.title}
                                             </span>
                                             <span className="text-[0.68rem] text-muted-foreground">
-                                                {venue.category.name}
+                                                {venue.category?.name || "—"}
                                             </span>
                                         </div>
                                     </button>

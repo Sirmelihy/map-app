@@ -112,17 +112,19 @@ export default function VenueDetailPage({ params }: PageProps) {
                         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
 
                         {/* Category badge on image */}
-                        <div className="absolute top-4 left-4">
-                            <Badge
-                                className="uppercase tracking-wider text-[0.65rem] shadow-lg border-0 px-3 py-1"
-                                style={{
-                                    backgroundColor: venue.category.hex_color,
-                                    color: "#fff",
-                                }}
-                            >
-                                {venue.category.name}
-                            </Badge>
-                        </div>
+                        {venue.category && (
+                            <div className="absolute top-4 left-4">
+                                <Badge
+                                    className="uppercase tracking-wider text-[0.65rem] shadow-lg border-0 px-3 py-1"
+                                    style={{
+                                        backgroundColor: venue.category.hex_color,
+                                        color: "#fff",
+                                    }}
+                                >
+                                    {venue.category.name}
+                                </Badge>
+                            </div>
+                        )}
                     </div>
 
                     {/* Bottom: Venue Info */}
@@ -164,13 +166,19 @@ export default function VenueDetailPage({ params }: PageProps) {
                                         Kategori
                                     </p>
                                     <div className="flex items-center gap-2">
-                                        <span
-                                            className="w-2.5 h-2.5 rounded-full shrink-0"
-                                            style={{ backgroundColor: venue.category.hex_color }}
-                                        />
-                                        <span className="text-sm font-medium text-card-foreground">
-                                            {venue.category.name}
-                                        </span>
+                                        {venue.category ? (
+                                            <>
+                                                <span
+                                                    className="w-2.5 h-2.5 rounded-full shrink-0"
+                                                    style={{ backgroundColor: venue.category.hex_color }}
+                                                />
+                                                <span className="text-sm font-medium text-card-foreground">
+                                                    {venue.category.name}
+                                                </span>
+                                            </>
+                                        ) : (
+                                            <span className="text-sm text-muted-foreground">—</span>
+                                        )}
                                     </div>
                                 </CardContent>
                             </Card>
@@ -208,7 +216,7 @@ export default function VenueDetailPage({ params }: PageProps) {
                         <VenueLocationMap
                             latitude={venue.latitude}
                             longitude={venue.longitude}
-                            color={venue.category.hex_color}
+                            color={venue.category?.hex_color || "#EF4444"}
                             title={venue.title}
                         />
                     </div>

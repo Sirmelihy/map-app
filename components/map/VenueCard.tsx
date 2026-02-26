@@ -47,10 +47,10 @@ export default function VenueCard({ venue, onClose }: Props) {
                 <Badge
                     className="self-start uppercase tracking-wide text-[0.68rem] text-white shadow-lg border-0"
                     style={{
-                        background: `linear-gradient(135deg, ${venue.category.hex_color}, ${venue.category.hex_color}cc)`,
+                        background: `linear-gradient(135deg, ${venue.category?.hex_color || "#888"}, ${venue.category?.hex_color || "#888"}cc)`,
                     }}
                 >
-                    {venue.category.name}
+                    {venue.category?.name || "—"}
                 </Badge>
 
                 <h3 className="text-base sm:text-lg font-bold text-card-foreground leading-snug">

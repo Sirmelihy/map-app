@@ -126,16 +126,16 @@ export default function HomeSearchBar({ venues }: Props) {
                                                 className="self-start text-xs"
                                                 style={{
                                                     borderColor:
-                                                        venue.category
-                                                            .hex_color + "44",
+                                                        (venue.category
+                                                            ?.hex_color || "#888") + "44",
                                                     color: venue.category
-                                                        .hex_color,
+                                                        ?.hex_color || "#888",
                                                     backgroundColor:
-                                                        venue.category
-                                                            .hex_color + "15",
+                                                        (venue.category
+                                                            ?.hex_color || "#888") + "15",
                                                 }}
                                             >
-                                                {venue.category.name}
+                                                {venue.category?.name || "—"}
                                             </Badge>
                                         </div>
 
