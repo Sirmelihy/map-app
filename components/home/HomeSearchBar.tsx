@@ -55,7 +55,7 @@ export default function HomeSearchBar({ venues }: Props) {
         <Popover open={showResults} onOpenChange={setOpen}>
             <PopoverAnchor asChild>
                 <div className="relative w-full max-w-xl mx-auto flex items-stretch group">
-                    <div className="flex justify-center items-center px-3 bg-primary border border-r-0 rounded-l-md group-focus-within:border-ring">
+                    <div className="flex justify-center items-center px-3 bg-primary border border-r-0 rounded-l-md">
                         <Search className="h-4 w-4 text-white" />
                     </div>
                     <Input
