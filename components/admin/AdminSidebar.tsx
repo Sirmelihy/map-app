@@ -19,11 +19,6 @@ import {
 
 const menuItems = [
     {
-        title: "Dashboard",
-        url: "/admin",
-        icon: LayoutDashboard,
-    },
-    {
         title: "Kategori Ekle",
         url: "/admin/kategori-ekle",
         icon: FolderPlus,
