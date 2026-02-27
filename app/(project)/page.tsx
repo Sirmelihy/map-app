@@ -2,11 +2,12 @@
 
 import { usePublicVenues } from "@/hooks/useVenues";
 import { useRouter } from "next/navigation";
-import { Map, Music, LogIn } from "lucide-react";
+import { Map, Music, LogIn, Hamburger, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HeroSlideshow from "@/components/home/HeroSlideshow";
 import HomeSearchBar from "@/components/home/HomeSearchBar";
 import HomeVenuesBar from "@/components/home/HomeVenuesBar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export default function HomePage() {
     const { data: venues, isLoading } = usePublicVenues();
@@ -29,6 +30,24 @@ export default function HomePage() {
         <div className="relative h-screen w-screen overflow-hidden">
             {/* Background Slideshow */}
             <HeroSlideshow />
+
+            {/* Menu */}
+            <div className="absolute top-4 right-4 z-50 cursor-pointer">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="rounded-full w-10 h-10 p-0 flex items-center justify-center cursor-pointer">
+                            <Menu className="size-5" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem onClick={() => router.push("/login")}>Giriş Yap</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => router.push("/hakkimizda")}>Hakkımızda</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => router.push("/kullanim-kosullari")}>Kullanım Koşulları</DropdownMenuItem>
+                        </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
 
             {/* Foreground Content */}
             <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 pt-[var(--safe-top)] pb-[var(--safe-bottom)]">
@@ -60,14 +79,6 @@ export default function HomePage() {
                     >
                         <Map className="size-4 mr-2 transition-transform duration-300 group-hover:scale-110" />
                         Haritayı Keşfet
-                    </Button>
-                    <Button
-                        variant="outline"
-                        onClick={() => router.push("/login")}
-                        className="px-4 py-4 cursor-pointer"
-                    >
-                        <LogIn className="size-4 mr-2" />
-                        Giriş Yap
                     </Button>
                 </div>
             </div>
